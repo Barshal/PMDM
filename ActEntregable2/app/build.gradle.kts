@@ -50,4 +50,11 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    // Para Volley (llamadas a la red)
+    implementation("com.android.volley:volley:1.2.1")
+
+    // Para Gson (convertir JSON a objetos Kotlin/Java)
+    implementation("com.google.code.gson:gson:2.10.1")
+
 }
