@@ -1,20 +1,34 @@
 package com.example.entergable2
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import com.example.entergable2.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), View.OnClickListener {
+
+    // Creamos el binding para obtener los elementos de la parte grafica
+    private lateinit var binding: ActivityMainBinding // no inicializar aqui
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+        binding = ActivityMainBinding.inflate(layoutInflater) // inicializar aqui
+        setContentView(binding.root)
+
+        acciones()
+    }
+
+    private fun acciones() {
+        binding.btnNavCarrito.setOnClickListener {this}
+    }
+
+    override fun onClick(v: View?) {
+        when(v?.id){
+            binding.btnNavCarrito.id -> {
+                val intent = Intent(this, SecondActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
 }
