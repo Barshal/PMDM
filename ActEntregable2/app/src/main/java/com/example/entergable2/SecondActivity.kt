@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.entergable2.databinding.ActivitySecondBinding
+import com.example.entergable2.model.Product
 import com.google.gson.Gson
 import org.json.JSONArray
 import org.json.JSONObject
@@ -53,7 +54,8 @@ class SecondActivity : AppCompatActivity(), View.OnClickListener {
         Log.v("conexion", productosArray.toString())
         for (i in 0 .. productosArray.length() -1){
             val productos: JSONObject = productosArray.getJSONObject(i)
-            //val producto: Producto = gson.fromJson(productos.toString(), Producto::class.java)
+            val producto: Product = gson.fromJson(productos.toString(), Product::class.java)
+            Log.v("conexion", producto.title.toString())
 
         }
 

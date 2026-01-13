@@ -8,7 +8,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.entergable2.network.CategoryRepository
 import com.example.entergable2.databinding.ActivityMainBinding
-
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     // Creamos el binding para obtener los elementos de la parte grafica
