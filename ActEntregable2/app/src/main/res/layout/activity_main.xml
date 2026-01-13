@@ -17,6 +17,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
+    <Spinner
+        android:id="@+id/spinnerCategorias"
+        android:layout_width="409dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnNavCarrito"
+        android:theme="@style/ThemeOverlay.AppCompat.Light"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

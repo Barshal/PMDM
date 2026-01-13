@@ -23,10 +23,10 @@ class SecondActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(binding.root)
 
         accciones()
-        obtenerProductor()
 
         //Pasos para realizar la peticion a una url con volley
         //1. Peticion del tipo correcto
+        obtenerProductor()
         //2. Añado la peticion a la pila de volley
     }
 
@@ -52,7 +52,7 @@ class SecondActivity : AppCompatActivity(), View.OnClickListener {
         val productosArray: JSONArray = param.getJSONArray("products")
         Log.v("conexion", param.toString())
         Log.v("conexion", productosArray.toString())
-        for (i in 0 .. productosArray.length() -1){
+        for (i in 0..productosArray.length() - 1) {
             val productos: JSONObject = productosArray.getJSONObject(i)
             val producto: Product = gson.fromJson(productos.toString(), Product::class.java)
             Log.v("conexion", producto.title.toString())

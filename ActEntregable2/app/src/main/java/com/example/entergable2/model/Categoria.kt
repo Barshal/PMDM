@@ -2,8 +2,8 @@ package com.example.entergable2.model
 import com.google.gson.annotations.SerializedName
 
 data class Categoria (
-    @SerializedName("slug") val categorySlug: String,
-    @SerializedName("name") val categoryName: String,
-    @SerializedName("url") val categoryUrl: String
+    @SerializedName("slug") val categorySlug: String? = null,
+    @SerializedName("name") val categoryName: String? = null,
+    @SerializedName("url") val categoryUrl: String? = null
 )
 
