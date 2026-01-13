@@ -26,7 +26,6 @@ class SecondActivity : AppCompatActivity(), View.OnClickListener {
 
         //Pasos para realizar la peticion a una url con volley
         //1. Peticion del tipo correcto
-        obtenerProductor()
         //2. Añado la peticion a la pila de volley
     }
 
@@ -35,31 +34,6 @@ class SecondActivity : AppCompatActivity(), View.OnClickListener {
         binding.btnNavMain.setOnClickListener(this)
     }
 
-    private fun obtenerProductor() {
-        val url = "https://dummyjson.com/products"
-        val request: JsonObjectRequest = JsonObjectRequest(url, {
-            Log.v("conexion", "Conexion correcta")
-            procesarPeticionProductos(it)
-        }, {
-            Log.v("conexion", "Conexion fallida productos")
-        })
-        // Añadirla request
-        Volley.newRequestQueue(applicationContext).add(request)
-    }
-
-    private fun procesarPeticionProductos(param: JSONObject) {
-        val gson = Gson()
-        val productosArray: JSONArray = param.getJSONArray("products")
-        Log.v("conexion", param.toString())
-        Log.v("conexion", productosArray.toString())
-        for (i in 0..productosArray.length() - 1) {
-            val productos: JSONObject = productosArray.getJSONObject(i)
-            val producto: Product = gson.fromJson(productos.toString(), Product::class.java)
-            Log.v("conexion", producto.title.toString())
-
-        }
-
-    }
 
     override fun onClick(v: View) {
         when (v.id) {

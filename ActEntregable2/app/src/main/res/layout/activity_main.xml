@@ -25,4 +25,13 @@
         app:layout_constraintTop_toBottomOf="@+id/btnNavCarrito"
         android:theme="@style/ThemeOverlay.AppCompat.Light"/>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewProductos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@+id/spinnerCategorias"
+        app:layout_constraintStart_toStartOf="@+id/spinnerCategorias"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCategorias" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
