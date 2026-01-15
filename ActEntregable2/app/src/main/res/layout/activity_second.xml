@@ -61,6 +61,7 @@
         android:backgroundTint="#3F51B5"/>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewProductosCarrito"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:maxHeight="450dp"
