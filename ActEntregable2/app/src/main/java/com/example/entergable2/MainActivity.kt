@@ -1,11 +1,11 @@
 package com.example.entergable2
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.toolbox.JsonArrayRequest
@@ -21,111 +21,100 @@ import org.json.JSONObject
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
-    // Creamos el binding para obtener los elementos de la parte grafica
-    private lateinit var binding: ActivityMainBinding // no inicializar aqui
+    private lateinit var binding: ActivityMainBinding
     private val listaCategorias = mutableListOf<String>()
-    private val listaProductos = mutableListOf<Product>()
+
+    // Lista maestra que SIEMPRE contendrá TODOS los productos de la API
+    private val listaProductosCompleta = mutableListOf<Product>()
     private var carrito = mutableListOf<Product>()
     private lateinit var adapter: ProductosAdapter
-    private lateinit var categoriaSelecionada: String
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater) // inicializar aqui
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Inicio la UI una sola vez con datos vacíos
+        initRecyclerView()
+
+        // 2. Recoco los datos de la red
         obtenerCategorias()
         obtenerProductos()
 
+        // 3. Configuro los listeners de los botones
         acciones()
-        initRecyclerView()
     }
 
     private fun acciones() {
         binding.btnNavCarrito.setOnClickListener(this)
-        binding.spinnerCategorias.onItemSelectedListener
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
             binding.btnNavCarrito.id -> {
-                val intent = Intent(this, SecondActivity::class.java)
-                startActivity(intent)
             }
         }
     }
 
     /*
-    * ----------------------------- LLAMADAS LOS ENDPOINTS -----------------------------
+    * ----------------------------- LLAMADAS A LOS ENDPOINTS -----------------------------
     * */
 
     private fun obtenerCategorias() {
         val url = "https://dummyjson.com/products/categories"
-        val request: JsonArrayRequest = JsonArrayRequest(url, {
-            Log.v("conexion", "Conexion correcta categorias")
+        val request = JsonArrayRequest(url, {
             procesarPeticionCategorias(it)
         }, {
             Log.v("conexion", "Conexion fallida categorias")
         })
-        // Añadirla request
         Volley.newRequestQueue(applicationContext).add(request)
     }
 
     private fun procesarPeticionCategorias(categoriasArray: JSONArray) {
+        listaCategorias.clear()
         val gson = Gson()
-        for (i in 0..categoriasArray.length() - 1) {
-            val categoriasJson: JSONObject = categoriasArray.getJSONObject(i)
+        for (i in 0 until categoriasArray.length()) {
+            val categoriaJson: JSONObject = categoriasArray.getJSONObject(i)
             val categoria: Categoria =
-                gson.fromJson(categoriasJson.toString(), Categoria::class.java)
-            // Me creo mi lista de opciones para el spinner
+                gson.fromJson(categoriaJson.toString(), Categoria::class.java)
             listaCategorias.add(categoria.categoryName.toString())
-            Log.v("conexion", categoria.categoryName.toString())
         }
+        // Una vez que tenemos las categorías configuramos el Spinner
         configurarSpinnerCategorias()
     }
 
     private fun obtenerProductos() {
         val url = "https://dummyjson.com/products"
-        val request: JsonObjectRequest = JsonObjectRequest(url, {
-            Log.v("conexion", "Conexion correcta")
+        val request = JsonObjectRequest(url, {
             procesarPeticionProductos(it)
         }, {
             Log.v("conexion", "Conexion fallida productos")
         })
-        // Añadirla request
         Volley.newRequestQueue(applicationContext).add(request)
     }
 
     private fun procesarPeticionProductos(param: JSONObject) {
+        listaProductosCompleta.clear()
         val gson = Gson()
         val productosArray: JSONArray = param.getJSONArray("products")
-        Log.v("conexion", param.toString())
-        Log.v("conexion", productosArray.toString())
-        for (i in 0..productosArray.length() - 1) {
-            val productos: JSONObject = productosArray.getJSONObject(i)
-            val producto: Product = gson.fromJson(productos.toString(), Product::class.java)
-            Log.v("conexion", producto.title.toString())
-            listaProductos.add(producto)
-            // Notificamos al adapter que el conjunto de datos ha cambiado.
-            // Esto le dice al RecyclerView que se redibuje con la nueva información.
-            adapter.notifyDataSetChanged()
-
+        for (i in 0 until productosArray.length()) {
+            val productoJson: JSONObject = productosArray.getJSONObject(i)
+            val producto: Product = gson.fromJson(productoJson.toString(), Product::class.java)
+            listaProductosCompleta.add(producto)
         }
+        // Cuando los productos llegan actualizamos el adapter para mostrar la lista completa
+        adapter.actualizarLista(listaProductosCompleta)
     }
 
     /*
     * ----------------------------- SPINNER -----------------------------
     * */
     private fun configurarSpinnerCategorias() {
-        // Creamos el Adapter. Es el "puente" entre los datos y la vista.
-        val adapter = ArrayAdapter(
-            this,
-            android.R.layout.simple_spinner_item,
-            listaCategorias
-        )
-        binding.spinnerCategorias.adapter = adapter
-        //Añadimos el listener para capturar la selección
+        val spinnerAdapter =
+            ArrayAdapter(this, android.R.layout.simple_spinner_item, listaCategorias)
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerCategorias.adapter = spinnerAdapter
+
         binding.spinnerCategorias.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
@@ -134,30 +123,40 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     position: Int,
                     id: Long
                 ) {
-                    // Podemos obtener el String directamente de nuestra lista.
-                    categoriaSelecionada = listaCategorias[position]
-
+                    val categoriaSeleccionada = listaCategorias[position]
+                    // Cada vez que el usuario elige algo filtramos
+                    filtrarProductos(categoriaSeleccionada)
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {
-                    TODO("Not yet implemented")
+                    // Se deja vacío para no crashear
                 }
             }
+    }
+
+    // Filtro de productos
+    private fun filtrarProductos(categoria: String) {
+        // Usamos la función 'filter' de Kotlin para crear una nueva lista
+        val productosFiltrados = listaProductosCompleta.filter { producto ->
+            producto.category.equals(categoria, ignoreCase = true)
         }
+        // Actualizamos el adapter con la nueva lista filtrada
+        adapter.actualizarLista(productosFiltrados)
+    }
 
     /*
     * ----------------------------- RECYCLER VIEW -----------------------------
     * */
 
     private fun initRecyclerView() {
-        adapter = ProductosAdapter(listaProductos, this) {
-            carrito.add(it)
+        // El adapter se crea UNA SOLA VEZ con una lista vacía.
+        adapter = ProductosAdapter(mutableListOf(), this) { productoClicado ->
+            carrito.add(productoClicado)
+            Toast.makeText(this, "${productoClicado.title} añadido al carrito", Toast.LENGTH_SHORT)
+                .show()
         }
         binding.recyclerViewProductos.adapter = adapter
-        binding.recyclerViewProductos.layoutManager = LinearLayoutManager(
-            this,
-            LinearLayoutManager.VERTICAL,
-            false
-        )
+        binding.recyclerViewProductos.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
     }
 }

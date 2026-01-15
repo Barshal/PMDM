@@ -4,65 +4,61 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="6dp">
+    android:padding="8dp">
 
     <ImageView
         android:id="@+id/iamgeRecycler"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@mipmap/ic_launcher"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@tools:sample/avatars" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideLine"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.5"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        />
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideLineVer"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.7"
-        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        />
-
-    <Button
-        android:id="@+id/btnAnadirCarro"
-        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:text="Añadir al carro"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideLineVer" />
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.70" />
 
     <TextView
         android:id="@+id/txtProductTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
         android:ellipsize="end"
         android:maxLines="2"
-        android:textAppearance="?attr/textAppearanceListItem"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+        app:layout_constraintEnd_toStartOf="@+id/guideLineVer"
         app:layout_constraintStart_toEndOf="@+id/iamgeRecycler"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Título de producto muy largo para hacer una prueba de cómo se corta" />
+        app:layout_constraintTop_toTopOf="@+id/iamgeRecycler"
+        tools:text="Título de producto muy largo para que se vea cómo se corta con los puntos suspensivos" />
 
     <TextView
         android:id="@+id/txtProductPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+        android:textColor="?attr/colorPrimary"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/txtProductTitle"
+        app:layout_constraintTop_toBottomOf="@+id/txtProductTitle"
+        tools:text="123.26 €" />
+
+    <Button
+        android:id="@+id/btnAnadirCarro"
+        style="@style/Widget.Material3.Button.TonalButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:ellipsize="end"
-        android:text="123.26 Eus"
+        android:text="Añadir"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideLineVer"
-        app:layout_constraintStart_toEndOf="@+id/iamgeRecycler"
-        app:layout_constraintTop_toTopOf="@+id/guideLine" />
-
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/guideLineVer" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

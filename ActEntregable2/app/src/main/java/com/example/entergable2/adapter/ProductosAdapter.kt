@@ -43,4 +43,11 @@ class ProductosAdapter(var lista: List<Product>, var contexto: Context,val onAna
             onAnadirClick(item)
         }
     }
+
+    fun actualizarLista(nuevaLista: List<Product>) {
+        // La propiedad en tu adapter se llama 'lista', no 'productos'
+        (this.lista as MutableList<Product>).clear()
+        (this.lista as MutableList<Product>).addAll(nuevaLista)
+        notifyDataSetChanged()
+    }
 }

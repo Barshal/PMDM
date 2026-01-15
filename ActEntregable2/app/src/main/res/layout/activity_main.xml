@@ -7,31 +7,66 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-
-    <Button
-        android:id="@+id/btnNavCarrito"
+    <!-- Un título para la sección de categorías -->
+    <TextView
+        android:id="@+id/label_categorias"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Ir a Carrito"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Filtrar por categoría:"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- El Spinner ahora ocupa el espacio entre el título y el botón -->
     <Spinner
         android:id="@+id/spinnerCategorias"
-        android:layout_width="409dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnNavCarrito"
-        android:theme="@style/ThemeOverlay.AppCompat.Light"/>
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:minHeight="48dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Light"
+        app:layout_constraintEnd_toStartOf="@+id/btnNavCarrito"
+        app:layout_constraintStart_toStartOf="@+id/label_categorias"
+        app:layout_constraintTop_toBottomOf="@+id/label_categorias" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewProductos"
-        android:layout_width="match_parent"
+    <!-- El botón del carrito, alineado a la derecha -->
+    <Button
+        android:id="@+id/btnNavCarrito"
+        style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@+id/spinnerCategorias"
-        app:layout_constraintStart_toStartOf="@+id/spinnerCategorias"
+        android:layout_marginEnd="16dp"
+        android:text="Carrito"
+        app:layout_constraintBottom_toBottomOf="@+id/spinnerCategorias"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/spinnerCategorias" />
+
+    <!-- Una línea divisoria para separar la cabecera del contenido -->
+    <View
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinnerCategorias" />
 
+    <!-- El RecyclerView ahora ocupa todo el espacio restante hasta abajo -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewProductos"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider"
+        tools:listitem="@layout/item_recycler_producto" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
