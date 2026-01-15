@@ -41,6 +41,7 @@ class ProductosAdapter(var lista: List<Product>, var contexto: Context,val onAna
         Glide.with(contexto).load(item.thumbnail).placeholder(R.drawable.ic_launcher_background).into(holder.binding.iamgeRecycler)
         holder.binding.btnAnadirCarro.setOnClickListener {
             onAnadirClick(item)
+
         }
     }
 

@@ -1,5 +1,6 @@
 package com.example.entergable2
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -52,6 +53,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             binding.btnNavCarrito.id -> {
+                // Lógica para enviar el json entre activites
+                val gson = Gson()
+                val carritoJsonString = gson.toJson(carrito)
+                val intent = Intent(this, SecondActivity::class.java)
+                intent.putExtra("CARRITO_JSON", carritoJsonString)
+                startActivity(intent)
             }
         }
     }
@@ -97,6 +104,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         listaProductosCompleta.clear()
         val gson = Gson()
         val productosArray: JSONArray = param.getJSONArray("products")
+
         for (i in 0 until productosArray.length()) {
             val productoJson: JSONObject = productosArray.getJSONObject(i)
             val producto: Product = gson.fromJson(productoJson.toString(), Product::class.java)
