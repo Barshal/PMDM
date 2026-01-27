@@ -47,6 +47,11 @@ class CarritoAdapter(var lista: List<Product>, var contexto: Context) :
         (this.lista as MutableList<Product>).addAll(nuevaLista)
         notifyDataSetChanged() // ¡Esta línea le dice al RecyclerView que se redibuje!
     }
+
+    fun addlista(product: Product){
+        this.lista.toMutableList().add(product)
+        notifyItemInserted(lista.size -1)
+        }
 }
 
 

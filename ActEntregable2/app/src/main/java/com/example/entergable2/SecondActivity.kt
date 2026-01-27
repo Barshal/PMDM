@@ -3,6 +3,8 @@ package com.example.entergable2
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -15,7 +17,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 import kotlin.math.round
 
-class SecondActivity : AppCompatActivity(), View.OnClickListener {
+class SecondActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySecondBinding
     private lateinit var adapter: CarritoAdapter
@@ -31,44 +33,15 @@ class SecondActivity : AppCompatActivity(), View.OnClickListener {
 
         // 1. INICIALIZA el RecyclerView con un adapter vacío
         initRecyclerView()
+        initMenu()
+
 
         // 2. RECUPERA Y PROCESA los datos del carrito
         recuperarProcesarCarrito()
 
-        acciones()
 
     }
 
-    private fun acciones() {
-        binding.btnNavMain.setOnClickListener(this)
-        binding.btnVaciarCarrito.setOnClickListener(this)
-        binding.btnComprar.setOnClickListener(this)
-    }
-
-    override fun onClick(v: View?) {
-        when (v?.id) {
-            binding.btnNavMain.id -> {
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-            }
-
-            binding.btnVaciarCarrito.id -> {
-                carritoRecibido.clear()
-                adapter.actualizarLista(carritoRecibido)
-                total = 0.0
-                binding.txtTotalCarrito.text = round(total).toString() + " €"
-            }
-
-            binding.btnComprar.id -> {
-                Toast.makeText(
-                    this,
-                    "Enhorabuena, compra por valor de ${total} realizada",
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
-            }
-        }
-    }
 
     private fun recuperarProcesarCarrito() {
         // 1. Obtenemos el JSONArray
@@ -103,5 +76,40 @@ class SecondActivity : AppCompatActivity(), View.OnClickListener {
         binding.recyclerViewProductosCarrito.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
     }
+
+    private fun initMenu() {
+        setSupportActionBar(binding.idToolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.second_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.itemVaciarCarrito -> {
+                carritoRecibido.clear()
+                adapter.actualizarLista(carritoRecibido)
+                total = 0.0
+                binding.txtTotalCarrito.text = round(total).toString() + " €"
+            }
+            R.id.itemComprar -> {
+                Toast.makeText(
+                    this,
+                    "Enhorabuena, compra por valor de ${total} realizada",
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
+            }
+            R.id.itemVolver -> {
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+            }
+        }
+        return true
+    }
+
 
 }

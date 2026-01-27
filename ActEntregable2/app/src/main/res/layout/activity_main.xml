@@ -7,18 +7,24 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/id_toolbar"
+        android:background="#3F51B5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
     <!-- Un título para la sección de categorías -->
     <TextView
         android:id="@+id/label_categorias"
-
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="25dp"
         android:text="Filtrar por categoría:"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/id_toolbar" />
 
     <!-- El Spinner ahora ocupa el espacio entre el título y el botón -->
     <Spinner
@@ -26,24 +32,23 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
         android:minHeight="48dp"
         android:theme="@style/ThemeOverlay.AppCompat.Light"
-        app:layout_constraintEnd_toStartOf="@+id/btnNavCarrito"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/label_categorias"
         app:layout_constraintTop_toBottomOf="@+id/label_categorias" />
 
-    <!-- El botón del carrito, alineado a la derecha -->
-    <Button
-        android:id="@+id/btnNavCarrito"
-        style="@style/Widget.Material3.Button.OutlinedButton.Icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:text="Ver carrito"
-        app:layout_constraintBottom_toBottomOf="@+id/spinnerCategorias"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/spinnerCategorias" />
+<!--    &lt;!&ndash; El botón del carrito, alineado a la derecha &ndash;&gt;-->
+<!--    <Button-->
+<!--        android:id="@+id/btnNavCarrito"-->
+<!--        style="@style/Widget.Material3.Button.OutlinedButton.Icon"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginEnd="16dp"-->
+<!--        android:text="Ver carrito"-->
+<!--        app:layout_constraintBottom_toBottomOf="@+id/spinnerCategorias"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/spinnerCategorias" />-->
 
     <!-- Una línea divisoria para separar la cabecera del contenido -->
     <View

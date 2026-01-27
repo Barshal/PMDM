@@ -41,7 +41,6 @@ class ProductosAdapter(var lista: List<Product>, var contexto: Context,val onAna
         Glide.with(contexto).load(item.thumbnail).placeholder(R.drawable.ic_launcher_background).into(holder.binding.iamgeRecycler)
         holder.binding.btnAnadirCarro.setOnClickListener {
             onAnadirClick(item)
-
         }
     }
 
@@ -50,5 +49,10 @@ class ProductosAdapter(var lista: List<Product>, var contexto: Context,val onAna
         (this.lista as MutableList<Product>).clear()
         (this.lista as MutableList<Product>).addAll(nuevaLista)
         notifyDataSetChanged()
+    }
+
+    fun addLista(product: Product){
+        this.lista.toMutableList().add(product)
+        notifyItemInserted(lista.size -1)
     }
 }

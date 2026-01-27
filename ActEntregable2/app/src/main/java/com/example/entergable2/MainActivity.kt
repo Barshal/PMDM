@@ -3,6 +3,8 @@ package com.example.entergable2
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -20,7 +22,7 @@ import com.google.gson.Gson
 import org.json.JSONArray
 import org.json.JSONObject
 
-class MainActivity : AppCompatActivity(), View.OnClickListener {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private val listaCategorias = mutableListOf<String>()
@@ -36,6 +38,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(binding.root)
 
         // Inicio la UI una sola vez con datos vacíos
+        initMenu()
         initRecyclerView()
 
         // 2. Recoco los datos de la red
@@ -43,30 +46,30 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         obtenerProductos()
 
         // 3. Configuro los listeners de los botones
-        acciones()
+        //acciones()
     }
 
-    private fun acciones() {
-        binding.btnNavCarrito.setOnClickListener(this)
-    }
-
-    override fun onClick(v: View?) {
-        when (v?.id) {
-            binding.btnNavCarrito.id -> {
-                // Lógica para enviar el json entre activites
-                val gson = Gson()
-                val carritoJsonString = gson.toJson(carrito)
-                val intent = Intent(this, SecondActivity::class.java)
-                intent.putExtra("CARRITO_JSON", carritoJsonString)
-                startActivity(intent)
-            }
-        }
-    }
+//    private fun acciones() {
+//        binding.btnNavCarrito.setOnClickListener(this)
+//    }
+//
+//    // dejo la funcion a modo de estudio pero no aplica ya que el boton no se usa
+//    override fun onClick(v: View?) {
+//        when (v?.id) {
+//            binding.btnNavCarrito.id -> {
+//                // Lógica para enviar el json entre activites
+//                val gson = Gson()
+//                val carritoJsonString = gson.toJson(carrito)
+//                val intent = Intent(this, SecondActivity::class.java)
+//                intent.putExtra("CARRITO_JSON", carritoJsonString)
+//                startActivity(intent)
+//            }
+//        }
+//    }
 
     /*
     * ----------------------------- LLAMADAS A LOS ENDPOINTS -----------------------------
     * */
-
     private fun obtenerCategorias() {
         val url = "https://dummyjson.com/products/categories"
         val request = JsonArrayRequest(url, {
@@ -94,6 +97,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val url = "https://dummyjson.com/products"
         val request = JsonObjectRequest(url, {
             procesarPeticionProductos(it)
+            Log.v("conexion", "Conexion fallida productos")
+
         }, {
             Log.v("conexion", "Conexion fallida productos")
         })
@@ -155,7 +160,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     /*
     * ----------------------------- RECYCLER VIEW -----------------------------
     * */
-
     private fun initRecyclerView() {
         // El adapter se crea UNA SOLA VEZ con una lista vacía.
         adapter = ProductosAdapter(mutableListOf(), this) { productoClicado ->
@@ -167,4 +171,32 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         binding.recyclerViewProductos.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
     }
+
+    /*
+  * ----------------------------- MENU -----------------------------
+  * */
+    private fun initMenu() {
+        setSupportActionBar(binding.idToolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+       when(item.itemId){
+           R.id.itemVercarrito -> {
+               // Lógica para enviar el json entre activites
+               val gson = Gson()
+               val carritoJsonString = gson.toJson(carrito)
+               val intent = Intent(this, SecondActivity::class.java)
+               intent.putExtra("CARRITO_JSON", carritoJsonString)
+               startActivity(intent)
+           }
+       }
+        return true
+    }
+
 }
