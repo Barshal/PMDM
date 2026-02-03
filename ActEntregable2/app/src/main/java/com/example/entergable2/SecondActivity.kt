@@ -79,7 +79,7 @@ class SecondActivity : AppCompatActivity() {
 
     private fun initMenu() {
         setSupportActionBar(binding.idToolbar)
-        supportActionBar?.setDisplayShowTitleEnabled(true)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -110,6 +110,4 @@ class SecondActivity : AppCompatActivity() {
         }
         return true
     }
-
-
 }
