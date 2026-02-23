@@ -4,17 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="8dp">
+    android:background="@android:color/holo_orange_light"
+    android:layout_gravity="center">
 
-
-    <TextView
-        android:id="@+id/txtPregunta"
-        android:layout_width="300dp"
+    <Button
+        android:id="@+id/btnNavegar1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:maxLines="2"
+        android:backgroundTint="#898C8C"
+        android:text="Navegar 1"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Título de producto muy largo para que se vea cómo se corta con los puntos suspensivos" />
+        android:layout_marginBottom="20dp"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
